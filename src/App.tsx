@@ -1,33 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [news, setNews] = useState<any>([]);
+
+  interface Story {
+    id: number;
+    title: string;
+    by: string;
+    url: string;
+    kids: [];
+  }
+
+  const fetchHackerNews = async (): Promise<Story[]> => {
+    const ids = await fetch(
+      "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
+    ).then(res => res.json());
+    const stories: any = await Promise.all(
+      ids.slice(0, 99).map(
+        async (id: number): Promise<void | Story> => {
+          // const story: Story = await fetch(
+          const story: any = await fetch(
+            `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+          ).then(res => res.json()).then(res => setNews((news: any) => [...news, res]));
+          return story;
+        }
+      )
+    );
+    return stories;
+  };
+
+  useEffect(() => {
+    fetchHackerNews();
+  }, []);
+
+  // console.log('outside: ', news);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {news.map((post: { id: Key | null | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) => <h2 key={post.id}>{post.title}</h2>)}
     </>
   )
 }
