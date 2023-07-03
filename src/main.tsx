@@ -23,11 +23,10 @@ const router = createBrowserRouter(
       action: rootAction,
     },
     {
-      path: "news/:newsId",
+      path: "/news/:newsId",
       element: <News />,
       loader: newsLoader,
       action: newsAction,
-
     },
   ],
   { basename: baseName }
