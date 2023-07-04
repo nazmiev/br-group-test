@@ -25,6 +25,7 @@ const getComments = async (id: number): Promise<Story[]> => {
                 const comment: Story = await fetch(
                     `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
                 ).then(res => res.json());
+                console.log(comment);
                 return comment;
             }
         )
@@ -46,6 +47,11 @@ export async function loader({ params }: any) {
 
 export async function action() {
     console.log('action');
+    // может сюда засунуть подгрузку ответов на комментарии?
+}
+
+const showAnswers = () => {
+    console.log('showAnswers');
 }
 
 export default function Contact() {
@@ -57,9 +63,12 @@ export default function Contact() {
                 <h1>
                     {post.title}
                 </h1>
-                <>
-                    {comments.map((comment:any) => <h3 key={comment.id}>{comment.text}</h3>)}
-                </>
+                {comments.length && comments.map((comment: any) =>
+                    <div key={comment.id}>
+                        <p>{comment.text}</p>
+                        {/* {comment.kids ? <b onClick={showAnswers()}>Показать ответы: {comment.kids.length}</b> : <></>} */}
+                    </div>
+                )}
             </div>
         </div>
     );
