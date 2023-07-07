@@ -1,31 +1,33 @@
 import { useLoaderData } from "react-router-dom";
+import CommentBlock from "../components/CommentBlock";
 
-interface Story {
+export interface Story {
     id: number;
     title: string;
     by: string;
     url: string;
+    text?: string;
     kids: [];
 }
 
 const getPost = async (id: number): Promise<Story> => {
-    const story: any = await fetch(
+    const story: Story = await fetch(
         `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
     ).then(res => res.json());
     return story;
 }
 
-const getComments = async (id: number): Promise<Story[]> => {
+export const getComments = async (id: number): Promise<Story[]> => {
     const kids = await fetch(
         `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-    ).then(res => res.json()).then(res => res.kids);
-    const comments: any = await Promise.all(
+    ).then(res => res.json()).then(res => res.kids ?? []);
+
+    const comments: Story[] = await Promise.all(
         kids.map(
             async (id: number): Promise<void | Story> => {
                 const comment: Story = await fetch(
                     `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
                 ).then(res => res.json());
-                console.log(comment);
                 return comment;
             }
         )
@@ -47,11 +49,6 @@ export async function loader({ params }: any) {
 
 export async function action() {
     console.log('action');
-    // может сюда засунуть подгрузку ответов на комментарии?
-}
-
-const showAnswers = () => {
-    console.log('showAnswers');
 }
 
 export default function Contact() {
@@ -63,11 +60,8 @@ export default function Contact() {
                 <h1>
                     {post.title}
                 </h1>
-                {comments.length && comments.map((comment: any) =>
-                    <div key={comment.id}>
-                        <p>{comment.text}</p>
-                        {/* {comment.kids ? <b onClick={showAnswers()}>Показать ответы: {comment.kids.length}</b> : <></>} */}
-                    </div>
+                {comments.length && comments.map((comment: Story) =>
+                    <CommentBlock key={comment.id} comment={comment} />
                 )}
             </div>
         </div>
