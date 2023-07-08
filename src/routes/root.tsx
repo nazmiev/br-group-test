@@ -20,7 +20,7 @@ const getNews = async (): Promise<Story[]> => {
         "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
     ).then(res => res.json());
     const stories: any = await Promise.all(
-        ids.slice(0, 9).map(
+        ids.slice(0, 35).map(
             async (id: number): Promise<void | Story> => {
                 const story: Story = await fetch(
                     `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
@@ -34,11 +34,13 @@ const getNews = async (): Promise<Story[]> => {
 
 export async function loader() {
     const news = await getNews();
+    console.log('loader')
     return { news };
 }
 
 export async function action() {
     const news = await getNews();
+    console.log('action reload')
     return { news };
 }
 
@@ -72,16 +74,16 @@ export default function Root() {
                                             className={({ isActive, isPending }) =>
                                                 isActive ? "active" : isPending ? "pending" : ""
                                             }>
-                                            {post.title}
+                                            Название: {post.title}, Рейтинг: {post.score}, Автор: {post.by}, Дата: {new Date(post.time * 1000).toDateString()}
                                         </NavLink>
-                                        {post.kids ? <span>Комментарии: {post.kids.length}</span> : <></>}
+                                        {post.kids && <span> Комментариев: {post.kids.length}</span>}
                                     </>
                                 </li>
                             ))}
                         </ul>
                     ) : (
                         <p>
-                            <i>No contacts</i>
+                            <i>No news</i>
                         </p>
                     )}
                 </nav>
