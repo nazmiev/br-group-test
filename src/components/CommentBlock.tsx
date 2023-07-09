@@ -13,18 +13,27 @@ const CommentBlock = ({ comment }: any) => {
     const kids = await getComments(comment.id);
     setKids(kids);
     setLoading(false);
+    setOpen(true);
   };
 
   const [kids, setKids] = useState<Story[]>([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className={styles.root}>
-      {loading && <div id="search-spinner" />}
+
       <div className={styles.comment}>
         <p>{comment.text}</p>
         {comment.kids && (
-          <b onClick={() => showKids(comment)}>Ответы: {comment.kids.length}</b>
+          <div className={styles.show_kids}>
+            {loading && <div className={styles.spinner} />}
+            {/* <b onClick={() => showKids(comment)}>Show answers: {comment.kids.length}</b> */}
+            {open ? 
+              <b onClick={() => showKids(comment)}>Answers:</b>
+              :<b onClick={() => showKids(comment)}>Show answers: {comment.kids.length}</b>
+              }
+          </div>
         )}
 
         <div className={styles.kids}>

@@ -103,10 +103,11 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  gap: 0.6rem;
   justify-content: center;
   align-items: center;
   column-gap: 20px;
-  margin: 20px 0;
+  margin: 20px auto;
 }
 
 * {
@@ -127,6 +128,19 @@ body {
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
+  transition: border-color 0.25s;
+  line-height: 150%;
+}
+
+.one-post {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  margin-bottom: 0.6em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
   transition: border-color 0.25s;
   line-height: 150%;
 }
