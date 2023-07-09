@@ -1,4 +1,9 @@
-import { Form, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Form,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import CommentBlock from "../components/CommentBlock";
 import { Story } from "../types";
 
@@ -56,12 +61,18 @@ export async function action({ params }: any) {
 export default function Post() {
   const { post, comments }: any = useLoaderData();
   const navigate = useNavigate();
+  const navigation = useNavigation();
   const navigateHome = () => {
     navigate("/");
   };
 
   return (
     <div id="post">
+      <div
+        id="search-spinner"
+        aria-hidden
+        hidden={navigation.state === "idle"}
+      />
       <button onClick={navigateHome}>Вернуться к списку новостей</button>
       <div>
         <Form method="post">

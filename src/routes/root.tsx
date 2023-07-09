@@ -1,4 +1,4 @@
-import { NavLink, useLoaderData, Form } from "react-router-dom";
+import { NavLink, useLoaderData, Form, useNavigation } from "react-router-dom";
 import { useEffect } from "react";
 import { getNews } from "../utils";
 
@@ -14,6 +14,8 @@ export async function action() {
 
 export default function Root() {
   const { news }: any = useLoaderData();
+  const navigation = useNavigation();
+  console.log(navigation.state);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -23,18 +25,23 @@ export default function Root() {
   }, []);
 
   return (
-    <>
-      <div id="sidebar">
+    <div className="main">
+      <div className="main__container">
         <div>
           <Form method="post">
             <button type="submit">Reload</button>
           </Form>
         </div>
-        <nav>
+        <div>
+          <div
+            id="search-spinner"
+            aria-hidden
+            hidden={navigation.state === "idle"}
+          />
           {news.length ? (
-            <ul>
+            <div className="post-list">
               {news.map((post: any) => (
-                <li key={post.id}>
+                <div key={post.id} className="post">
                   <>
                     <NavLink
                       to={`news/${post.id}`}
@@ -42,24 +49,25 @@ export default function Root() {
                         isActive ? "active" : isPending ? "pending" : ""
                       }
                     >
-                      Название: {post.title}, Рейтинг: {post.score}, Автор:{" "}
-                      {post.by}, Дата:{" "}
-                      {new Date(post.time * 1000).toDateString()}
+                      {post.title}
                     </NavLink>
+                    <br />
+                    Rating: <b>{post.score}</b>, Author: <b>{post.by}</b>, Date:
+                    <b>{new Date(post.time * 1000).toDateString()}</b>
                     {post.kids && (
                       <span> Комментариев: {post.kids.length}</span>
                     )}
                   </>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
             <p>
               <i>No news</i>
             </p>
           )}
-        </nav>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
