@@ -5,10 +5,12 @@ import {
     useNavigation,
 } from "react-router-dom";
 import CommentBlock from "../components/CommentBlock";
-import { LoaderParams, PostType, Story } from "../types";
+// import { LoaderParams, PostType, Story } from "../types";
+import { Story } from "../types";
 import { getComments, getPost } from "../utils";
 
-export async function loader({ params }: LoaderParams): Promise<PostType> {
+// export async function loader({ params }: LoaderParams): Promise<PostType> {
+export async function loader({ params }: any) {
     const post: Story = await getPost(params.newsId);
     if (!post) {
         throw new Response("", {
@@ -20,7 +22,8 @@ export async function loader({ params }: LoaderParams): Promise<PostType> {
     return { post, comments };
 }
 
-export async function action({ params }: LoaderParams): Promise<PostType> {
+// export async function action({ params }: LoaderParams): Promise<PostType> {
+export async function action({ params }: any) {
     const post: Story = await getPost(params.newsId);
     if (!post) {
         throw new Response("", {
