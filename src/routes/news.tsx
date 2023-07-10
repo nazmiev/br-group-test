@@ -12,6 +12,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import Card from "react-bootstrap/Card";
 
 // export async function loader({ params }: LoaderParams): Promise<PostType> {
 export async function loader({ params }: any) {
@@ -50,43 +53,51 @@ export default function Post() {
 
   return (
     <Container fluid="md">
+      <ButtonToolbar
+        className="justify-content-between mb-3 mt-3"
+        aria-label="Toolbar with Button groups"
+      >
+        <Button variant="dark" onClick={navigateHome}>
+          Back to news
+        </Button>
+
+        <Spinner
+          animation="border"
+          role="status"
+          aria-hidden
+          hidden={navigation.state === "idle"}
+        />
+
+        <Form method="post">
+          <Button variant="dark" type="submit">
+            Refresh comments
+          </Button>
+        </Form>
+      </ButtonToolbar>
       <Row>
         <Col>
-          <div
-            id="search-spinner"
-            aria-hidden
-            hidden={navigation.state === "idle"}
-          />
-        </Col>
-        <Col>
-          <Button onClick={navigateHome}>Вернуться к списку новостей</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form method="post">
-            <Button type="submit">Reload</Button>
-          </Form>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div className="one-post">
-            <h1>{post.title}</h1>
-            <p>
-              Link: <a href={post.url}>{post.url}</a>
-            </p>
-            <p>Date: {new Date(post.time * 1000).toDateString()}</p>
-            <p>Author: {post.by}</p>
-            <p>Comments: {post.kids ? post.kids.length : "0"}</p>
-            {comments.length ? (
-              comments.map((comment: Story) => (
-                <CommentBlock key={comment.id} comment={comment} />
-              ))
-            ) : (
-              <></>
-            )}
-          </div>
+          <Card className="mb-2">
+            <Card.Body>
+              <Card.Title>{post.title}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">
+                Author: {post.by}
+              </Card.Subtitle>
+              <Card.Text>
+                Date: {new Date(post.time * 1000).toDateString()}
+              </Card.Text>
+              <Card.Link href={post.url}>Link to original</Card.Link>
+            </Card.Body>
+            <Card.Footer className="text-muted">
+              Comments: {post.kids ? post.kids.length : "0"}
+            </Card.Footer>
+          </Card>
+          {comments.length ? (
+            comments.map((comment: Story) => (
+              <CommentBlock key={comment.id} comment={comment} />
+            ))
+          ) : (
+            <></>
+          )}
         </Col>
       </Row>
     </Container>
