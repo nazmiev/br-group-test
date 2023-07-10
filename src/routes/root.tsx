@@ -1,6 +1,7 @@
 import { NavLink, useLoaderData, Form, useNavigation } from "react-router-dom";
 import { useEffect } from "react";
 import { getNews } from "../utils";
+import Button from "react-bootstrap/Button";
 
 export async function loader() {
   const news = await getNews();
@@ -29,7 +30,7 @@ export default function Root() {
       <div className="main__container">
         <div>
           <Form method="post">
-            <button type="submit">Reload</button>
+            <Button type="submit">Reload</Button>
           </Form>
         </div>
         <div>

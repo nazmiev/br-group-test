@@ -11,6 +11,8 @@ import News, {
   action as newsAction,
 } from "./routes/news";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 const baseName = import.meta.env.BASE_URL;
 
 const router = createBrowserRouter(
@@ -32,6 +34,6 @@ const router = createBrowserRouter(
   { basename: baseName }
 );
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RouterProvider router={router} />
-)
+);
