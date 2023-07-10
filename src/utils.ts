@@ -11,7 +11,7 @@ export const getNews = async (): Promise<Story[]> => {
   const ids = await fetch(
     "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
   ).then((res) => res.json());
-  const stories: any = await Promise.all(
+  const stories: Story[] = await Promise.all(
     ids.slice(0, 35).map(async (id: number): Promise<void | Story> => {
       const story: Story = await fetch(
         `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
@@ -23,19 +23,19 @@ export const getNews = async (): Promise<Story[]> => {
 };
 
 export const getComments = async (id: number): Promise<Story[]> => {
-  const kids = await fetch(
-    `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+  const kids: number[] = await fetch(
+      `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
   )
-    .then((res) => res.json())
-    .then((res) => res.kids ?? []);
+      .then((res) => res.json())
+      .then((res) => res.kids ?? []);
 
   const comments: Story[] = await Promise.all(
-    kids.map(async (id: number): Promise<void | Story> => {
-      const comment: Story = await fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-      ).then((res) => res.json());
-      return comment;
-    })
+      kids.map(async (id: number): Promise<Story> => {
+          const comment: Story = await fetch(
+              `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+          ).then((res) => res.json());
+          return comment;
+      })
   );
   return comments;
 };

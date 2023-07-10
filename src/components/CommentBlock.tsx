@@ -1,8 +1,8 @@
-import { getComments } from "../routes/news";
 import { useNavigation } from "react-router-dom";
 import { useState } from "react";
 import styles from "./CommentBlock.module.scss";
 import { Story } from "../types";
+import { getComments } from "../utils";
 
 const CommentBlock = ({ comment }: any) => {
   const navigation = useNavigation();
@@ -28,7 +28,6 @@ const CommentBlock = ({ comment }: any) => {
         {comment.kids && (
           <div className={styles.show_kids}>
             {loading && <div className={styles.spinner} />}
-            {/* <b onClick={() => showKids(comment)}>Show answers: {comment.kids.length}</b> */}
             {open ? 
               <b onClick={() => showKids(comment)}>Answers:</b>
               :<b onClick={() => showKids(comment)}>Show answers: {comment.kids.length}</b>
