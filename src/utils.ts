@@ -1,6 +1,6 @@
 import { Story } from "./types";
 
-export const getPost = async (id: number): Promise<Story> => {
+export const getPost = async (id: string): Promise<Story> => {
   const story: Story = await fetch(
     `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
   ).then((res) => res.json());
@@ -22,7 +22,7 @@ export const getNews = async (): Promise<Story[]> => {
   return stories;
 };
 
-export const getComments = async (id: number): Promise<Story[]> => {
+export const getComments = async (id: string): Promise<Story[]> => {
   const kids: number[] = await fetch(
       `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
   )

@@ -5,8 +5,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import CommentBlock from "../components/CommentBlock";
-// import { LoaderParams, PostType, Story } from "../types";
-import { Story } from "../types";
+import { LoaderParams, PostType, Story } from "../types";
 import { getComments, getPost } from "../utils";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -16,9 +15,10 @@ import Spinner from "react-bootstrap/Spinner";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Card from "react-bootstrap/Card";
 
-// export async function loader({ params }: LoaderParams): Promise<PostType> {
-export async function loader({ params }: any) {
-  const post: Story = await getPost(params.newsId);
+
+export async function loader({ params }: LoaderParams) {
+  if (!params.newsId) {return};
+    const post: Story = await getPost(params.newsId);
   if (!post) {
     throw new Response("", {
       status: 404,
@@ -26,12 +26,13 @@ export async function loader({ params }: any) {
     });
   }
   const comments: Story[] = await getComments(params.newsId);
+
   return { post, comments };
 }
 
-// export async function action({ params }: LoaderParams): Promise<PostType> {
-export async function action({ params }: any) {
-  const post: Story = await getPost(params.newsId);
+export async function action({ params }: LoaderParams) {
+  if (!params.newsId) {return};
+    const post: Story = await getPost(params.newsId);
   if (!post) {
     throw new Response("", {
       status: 404,
@@ -39,12 +40,12 @@ export async function action({ params }: any) {
     });
   }
   const comments: Story[] = await getComments(params.newsId);
+
   return { post, comments };
 }
 
 export default function Post() {
-  // const { post, comments }: PostType = useLoaderData();
-  const { post, comments }: any = useLoaderData();
+  const { post, comments } = useLoaderData() as PostType;
   const navigate = useNavigate();
   const navigation = useNavigation();
   const navigateHome = () => {

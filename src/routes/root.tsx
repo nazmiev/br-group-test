@@ -6,20 +6,21 @@ import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Card from "react-bootstrap/Card";
+import { Story } from "../types";
 
 
 export async function loader() {
   const news = await getNews();
-  return { news };
+  return news;
 }
 
 export async function action() {
   const news = await getNews();
-  return { news };
+  return news;
 }
 
 export default function Root() {
-  const { news }: any = useLoaderData();
+  const news = useLoaderData() as Story[];
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function Root() {
       </ButtonToolbar>
       {news.length ? (
         <>
-          {news.map((post: any) => (
+          {news.map((post: Story) => (
             <Card className="mb-2" key={post.id}>
               <Card.Body>
                 <Card.Title>

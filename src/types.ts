@@ -1,19 +1,22 @@
+import { ActionFunctionArgs, ParamParseKey, Params } from "react-router-dom";
+
 export interface Story {
   id: number;
   title: string;
   by: string;
   url: string;
   text?: string;
-  time?: string;
+  score: number; 
+  time: number;
   kids: [];
 }
 
-export interface LoaderParams {
-  params: ParamsType;
-}
+const PathNames = {
+  newsId: '/news/:newsId',
+} as const;
 
-export interface ParamsType {
-  newsId: number;
+export interface LoaderParams extends ActionFunctionArgs{
+  params: Params<ParamParseKey<typeof PathNames.newsId>>;
 }
 
 export interface PostType {
