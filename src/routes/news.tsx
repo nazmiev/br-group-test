@@ -53,10 +53,7 @@ export default function Post() {
 
   return (
     <Container fluid="md">
-      <ButtonToolbar
-        className="justify-content-between mb-3 mt-3"
-        aria-label="Toolbar with Button groups"
-      >
+      <ButtonToolbar className="justify-content-between mb-3 mt-3">
         <Button variant="dark" onClick={navigateHome}>
           Back to news
         </Button>

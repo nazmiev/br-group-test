@@ -1,10 +1,13 @@
 import { useNavigation } from "react-router-dom";
 import { useState } from "react";
-import styles from "./CommentBlock.module.scss";
 import { Story } from "../types";
 import { getComments } from "../utils";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const CommentBlock = ({ comment }: any) => {
   const navigation = useNavigation();
@@ -26,28 +29,32 @@ const CommentBlock = ({ comment }: any) => {
     <Card className="mb-2">
       <ListGroup variant="flush">
         <ListGroup.Item>
-          <div className={styles.comment}>
-            <p>{comment.text}</p>
-            {comment.kids && (
-              <div className={styles.show_kids}>
-                {loading && <div className={styles.spinner} />}
+          <p>{comment.text}</p>
+          {comment.kids && (
+            <Row xs={2} md={4} lg={6} className="mb-2">
+              <Col>
                 {open ? (
-                  <b onClick={() => showKids(comment)}>Answers:</b>
+                  <Button size="sm" variant="dark" disabled>Answers:</Button>
                 ) : (
-                  <b onClick={() => showKids(comment)}>
+                  <Button size="sm" variant="dark" onClick={() => showKids(comment)}>
                     Show answers: {comment.kids.length}
-                  </b>
+                  </Button>
                 )}
-              </div>
-            )}
+              </Col>
+              <Col>
+                {loading && <Spinner
+                  size="sm"
+                  animation="border"
+                  role="status"
+                />}
+              </Col>
+            </Row>
+          )}
 
-            <div className={styles.kids}>
-              {kids &&
-                kids.map((kid: Story) => (
-                  <CommentBlock key={kid.id} comment={kid} />
-                ))}
-            </div>
-          </div>
+          {kids &&
+            kids.map((kid: Story) => (
+              <CommentBlock key={kid.id} comment={kid} />
+            ))}
         </ListGroup.Item>
       </ListGroup>
     </Card>

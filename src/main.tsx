@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
 import ErrorPage from "./error-page";
 import Root, {
   loader as rootLoader,
@@ -10,7 +9,6 @@ import News, {
   loader as newsLoader,
   action as newsAction,
 } from "./routes/news";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const baseName = import.meta.env.BASE_URL;
