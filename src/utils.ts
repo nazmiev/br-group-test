@@ -12,7 +12,7 @@ export const getNews = async (): Promise<Story[]> => {
     "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
   ).then((res) => res.json());
   const stories: Story[] = await Promise.all(
-    ids.slice(0, 35).map(async (id: number): Promise<void | Story> => {
+    ids.slice(0, 99).map(async (id: number): Promise<void | Story> => {
       const story: Story = await fetch(
         `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
       ).then((res) => res.json());
