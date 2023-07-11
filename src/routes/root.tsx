@@ -21,7 +21,6 @@ export async function action() {
 export default function Root() {
   const { news }: any = useLoaderData();
   const navigation = useNavigation();
-  console.log(navigation.state);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

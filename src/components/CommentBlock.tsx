@@ -1,4 +1,3 @@
-import { useNavigation } from "react-router-dom";
 import { useState } from "react";
 import { Story } from "../types";
 import { getComments } from "../utils";
@@ -10,8 +9,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const CommentBlock = ({ comment }: any) => {
-  const navigation = useNavigation();
-  console.log(navigation.state);
 
   const showKids = async (comment: Story) => {
     setLoading(true);
