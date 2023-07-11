@@ -18,28 +18,28 @@ import Card from "react-bootstrap/Card";
 
 export async function loader({ params }: LoaderParams) {
   if (!params.newsId) {return};
-    const post: Story = await getPost(params.newsId);
+    const post: Story = await getPost(+params.newsId);
   if (!post) {
     throw new Response("", {
       status: 404,
       statusText: "Not Found",
     });
   }
-  const comments: Story[] = await getComments(params.newsId);
+  const comments: Story[] = await getComments(+params.newsId);
 
   return { post, comments };
 }
 
 export async function action({ params }: LoaderParams) {
   if (!params.newsId) {return};
-    const post: Story = await getPost(params.newsId);
+    const post: Story = await getPost(+params.newsId);
   if (!post) {
     throw new Response("", {
       status: 404,
       statusText: "Not Found",
     });
   }
-  const comments: Story[] = await getComments(params.newsId);
+  const comments: Story[] = await getComments(+params.newsId);
 
   return { post, comments };
 }
